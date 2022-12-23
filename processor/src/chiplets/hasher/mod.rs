@@ -10,6 +10,7 @@ use vm_core::{
         RETURN_STATE, RETURN_STATE_LABEL, STATE_WIDTH, TRACE_WIDTH,
     },
     utils::collections::BTreeMap,
+    code_blocks::CodeBlockType::SPAN
 };
 
 mod lookups;
@@ -277,7 +278,7 @@ impl Hasher {
         let lookup = self.get_lookup(RETURN_LABEL, ZERO, HasherLookupContext::Return);
         lookups.push(lookup);
 
-        let result = get_digest(&state);
+        let result = SPAN.tag_raw(&get_digest(&state));
 
         (addr, result)
     }

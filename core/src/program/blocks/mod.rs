@@ -1,5 +1,5 @@
 use super::{hasher, Box, Digest, Felt, FieldElement, Operation, Vec};
-use crate::DecoratorList;
+use crate::{DecoratorList, chiplets::hasher::DIGEST_LEN};
 use core::fmt;
 
 mod call_block;
@@ -126,6 +126,9 @@ impl CodeBlockType {
     pub fn tag(self, digest: Digest) -> Digest {
         map_digest(digest, |x| Felt::from(self as u8) * *x + Felt::from(1u8))
     }
+    pub fn tag_raw(self, raw_digest: &[Felt; DIGEST_LEN]) -> [Felt; DIGEST_LEN] {
+        map_raw_digest(raw_digest, |x| Felt::from(self as u8) * *x + Felt::from(1u8))
+    }
     pub fn hash_merge(self, body: &[Digest; 2]) -> Digest {
         self.tag(hasher::merge(&body))
     }
@@ -134,14 +137,17 @@ impl CodeBlockType {
     }
 }
 
-pub fn map_digest<F>(digest: Digest, f:F) -> Digest where
+pub fn map_raw_digest<F>(digest: &[Felt; DIGEST_LEN], f:F) -> [Felt;DIGEST_LEN] where
     F: FnMut (&Felt) -> Felt {
-    let v : Vec<Felt> = digest.as_elements().iter().map(f).collect();
-    Digest::new(
-        v
-        .try_into()
+    let v : Vec<Felt> = digest.iter().map(f).collect();
+    v.try_into()
         .unwrap_or_else(
             |v: Vec<Felt>| panic!("expected length {} but it was {}", hasher::DIGEST_LEN, v.len())
         )
-    )
+}
+
+
+pub fn map_digest<F>(digest: Digest, f:F) -> Digest where
+    F: FnMut (&Felt) -> Felt {
+    Digest::new(map_raw_digest(&<[Felt; DIGEST_LEN]>::from(digest),f))
 }
