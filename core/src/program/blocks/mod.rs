@@ -109,3 +109,39 @@ impl fmt::Display for CodeBlock {
         }
     }
 }
+
+// PROGRAM BLOCK TYPE
+#[derive(Clone, Debug)]
+#[repr(u8)]
+pub enum CodeBlockType {
+    SPAN = 3,
+    JOIN = 5,
+    SPLIT = 7,
+    LOOP = 11,
+    CALL = 13,
+    // PROXY = 17 -- deliberately not used
+}
+
+impl CodeBlockType {
+    pub fn tag(self, digest: Digest) -> Digest {
+        map_digest(digest, |x| Felt::from(self as u8) * *x + Felt::from(1u8))
+    }
+    pub fn hash_merge(self, body: &[Digest; 2]) -> Digest {
+        self.tag(hasher::merge(&body))
+    }
+    pub fn hash_elements(self, body: &[Felt]) -> Digest {
+        self.tag(hasher::hash_elements(&body))
+    }
+}
+
+pub fn map_digest<F>(digest: Digest, f:F) -> Digest where
+    F: FnMut (&Felt) -> Felt {
+    let v : Vec<Felt> = digest.as_elements().iter().map(f).collect();
+    Digest::new(
+        v
+        .try_into()
+        .unwrap_or_else(
+            |v: Vec<Felt>| panic!("expected length {} but it was {}", hasher::DIGEST_LEN, v.len())
+        )
+    )
+}

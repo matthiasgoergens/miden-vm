@@ -1,4 +1,4 @@
-use super::{fmt, hasher, Digest};
+use super::{fmt, CodeBlockType::CALL, Digest};
 
 // CALL BLOCK
 // ================================================================================================
@@ -24,7 +24,7 @@ impl Call {
     // --------------------------------------------------------------------------------------------
     /// Returns a new [Call] block instantiated with the specified function body hash.
     pub fn new(fn_hash: Digest) -> Self {
-        let hash = hasher::merge(&[fn_hash, Digest::default()]);
+        let hash = CALL.hash_merge(&[fn_hash, Digest::default()]);
         Self {
             hash,
             fn_hash,
@@ -36,7 +36,7 @@ impl Call {
     /// as a kernel call.
     pub fn new_syscall(fn_hash: Digest) -> Self {
         // TODO: make hash computation different from regular call
-        let hash = hasher::merge(&[fn_hash, Digest::default()]);
+        let hash = CALL.hash_merge(&[fn_hash, Digest::default()]);
         Self {
             hash,
             fn_hash,
