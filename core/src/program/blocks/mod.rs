@@ -111,7 +111,7 @@ impl fmt::Display for CodeBlock {
 }
 
 // PROGRAM BLOCK TYPE
-#[derive(Clone, Debug)]
+#[derive(Copy, Clone, Debug)]
 #[repr(u8)]
 pub enum CodeBlockType {
     SPAN = 3,

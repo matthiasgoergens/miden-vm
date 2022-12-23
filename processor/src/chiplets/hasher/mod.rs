@@ -10,7 +10,7 @@ use vm_core::{
         RETURN_STATE, RETURN_STATE_LABEL, STATE_WIDTH, TRACE_WIDTH,
     },
     utils::collections::BTreeMap,
-    code_blocks::CodeBlockType::SPAN
+    code_blocks::CodeBlockType::{self, SPAN}
 };
 
 mod lookups;
@@ -140,6 +140,7 @@ impl Hasher {
     /// computation started.
     pub(super) fn hash_control_block(
         &mut self,
+        block_type: CodeBlockType,
         h1: Word,
         h2: Word,
         expected_hash: Digest,
@@ -167,7 +168,7 @@ impl Hasher {
         let lookup = self.get_lookup(RETURN_HASH_LABEL, ZERO, HasherLookupContext::Return);
         lookups.push(lookup);
 
-        let result = get_digest(&state);
+        let result = block_type.tag_raw(&get_digest(&state));
 
         (addr, result)
     }
