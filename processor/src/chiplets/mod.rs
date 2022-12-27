@@ -220,7 +220,7 @@ impl Chiplets {
             .hash_control_block(block_type, h1, h2, expected_hash, &mut lookups);
 
         // make sure the result computed by the hasher is the same as the expected block hash
-        debug_assert_eq!(expected_hash, block_type.tag(result.into()));
+        debug_assert_eq!(expected_hash, result.into());
 
         // send the request for the hash initialization
         self.bus.request_hasher_lookup(lookups[0], self.clk);
