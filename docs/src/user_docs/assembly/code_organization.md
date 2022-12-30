@@ -105,12 +105,30 @@ Documentation comments must precede a procedure declaration. Using them inside a
 
 ### Noop
 
-At the moment, Miden assembly does not allow empty procedures nor other empty blocks like in loops.  To sidestep this limitation, you can use the `noop` instruction:
+Sometimes you don't want to do anything.  The `noop` instruction has no effect:
 
 ```
-proc.foo
+begin
     noop
 end
 ```
 
 This is mostly useful for people who want to generate their assembly programmatically.
+
+Alternatively, you can also just use an empty block:
+
+```
+begin
+end
+```
+
+Empty procedures, loops and so on are also possible:
+
+```
+proc.foo
+end
+
+begin
+    exec.foo
+end
+```

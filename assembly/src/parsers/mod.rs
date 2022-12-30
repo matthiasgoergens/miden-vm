@@ -212,10 +212,9 @@ pub fn parse_program(source: &str) -> Result<ProgramAst, ParsingError> {
         end_of_nodes = body.len() == node_count;
     }
 
-    // make sure at least one block has been read
+    // inject a synthetic noop, if no token has been read.
     if body.len() == beginning_node_count {
-        let start_op = tokens.read_at(start_pos).expect("no start token");
-        return Err(ParsingError::empty_block(start_op));
+        body.push(Node::Instruction(Instruction::Noop));
     }
 
     // consume the 'end' token
