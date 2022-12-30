@@ -29,6 +29,11 @@ fn simple_new_instrctns() {
             span push(10) push(50) push(2) u32add3 drop end \
         end";
     assert_eq!(expected, format!("{program}"));
+
+    let source = "begin noop end";
+    let program = assembler.compile(source).unwrap();
+    let expected = "begin span noop end end";
+    assert_eq!(expected, format!("{program}"));
 }
 
 #[test]

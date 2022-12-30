@@ -262,6 +262,8 @@ pub enum Instruction {
     CallLocal(u16),
     CallImported(ProcedureId),
     SysCall(ProcedureId),
+
+    Noop,
 }
 
 impl fmt::Display for Instruction {
@@ -513,6 +515,7 @@ impl fmt::Display for Instruction {
             Self::CallLocal(index) => write!(f, "call.{index}"),
             Self::CallImported(proc_id) => write!(f, "call.{proc_id}"),
             Self::SysCall(proc_id) => write!(f, "syscall.{proc_id}"),
+            Self::Noop => write!(f, "noop"),
         }
     }
 }
