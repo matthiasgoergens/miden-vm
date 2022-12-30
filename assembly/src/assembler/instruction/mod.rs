@@ -285,6 +285,8 @@ impl Assembler {
             Instruction::CallLocal(idx) => self.call_local(*idx, ctx),
             Instruction::CallImported(id) => self.call_imported(id, ctx),
             Instruction::SysCall(id) => self.syscall(id, ctx),
+
+            Instruction::Noop => span.add_op(Noop),
         };
 
         // compute and update the cycle count of the instruction which just finished executing

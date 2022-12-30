@@ -452,6 +452,8 @@ impl Serializable for Instruction {
                 OpCode::SysCall.write_into(target)?;
                 imported.write_into(target)?
             }
+
+            Self::Noop => OpCode::Noop.write_into(target)?,
         }
         Ok(())
     }

@@ -102,3 +102,15 @@ export.foo
 end
 ```
 Documentation comments must precede a procedure declaration. Using them inside a procedure body is an error. 
+
+### Noop
+
+At the moment, Miden assembly does not allow empty procedures nor other empty blocks like in loops.  To sidestept this limitation, you can use the `noop` instruction:
+
+```
+proc.foo
+    noop
+end
+```
+
+This is mostly useful for people who want to generate their assembly programmatically.

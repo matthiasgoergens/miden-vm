@@ -259,6 +259,8 @@ pub enum OpCode {
     CallImported = 227,
     SysCall = 228,
 
+    Noop = 250,
+
     // ----- control flow -------------------------------------------------------------------------
     IfElse = 253,
     Repeat = 254,

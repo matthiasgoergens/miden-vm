@@ -321,6 +321,8 @@ impl Deserializable for Instruction {
             OpCode::CallImported => Ok(Instruction::CallImported(ProcedureId::read_from(bytes)?)),
             OpCode::SysCall => Ok(Instruction::SysCall(ProcedureId::read_from(bytes)?)),
 
+            OpCode::Noop => Ok(Instruction::Noop),
+
             // ----- control flow -----------------------------------------------------------------
             // control flow instructions should be parsed as a part of Node::read_from() and we
             // should never get here

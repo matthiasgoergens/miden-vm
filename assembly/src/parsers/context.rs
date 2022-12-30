@@ -490,6 +490,8 @@ impl ParserContext {
             "call" => self.parse_call(op),
             "syscall" => self.parse_syscall(op),
 
+            "noop" => simple_instruction(op, Noop),
+
             // ----- catch all --------------------------------------------------------------------
             _ => Err(ParsingError::invalid_op(op)),
         }
