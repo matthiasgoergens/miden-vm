@@ -37,6 +37,15 @@ fn simple_new_instrctns() {
 }
 
 #[test]
+fn empty_span() {
+    let assembler = super::Assembler::default();
+    let source = "begin end";
+    let program = assembler.compile(source).unwrap();
+    let expected = "begin span noop end end";
+    assert_eq!(expected, format!("{}", program));
+}
+
+#[test]
 fn single_span() {
     let assembler = super::Assembler::default();
     let source = "begin push.1 push.2 add end";
